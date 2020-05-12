@@ -10,6 +10,7 @@ class App extends Component {
       { id: "asdfasd", name: "Brian", age: 32 },
       { id: "sdfgh", name: "David", age: 55 },
       { id: "sertert", name: "Bethany", age: 38 },
+      { id: "zsd", name: "Steven", age: 18 },
     ],
     otherState: "some other value",
     displayComponent1: false,
@@ -20,18 +21,23 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
           <a
             className="App-link"
             href="https://reactjs.org"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn Reac
+            Learn React
           </a>
-          <Component1 name={this.state.name} key={this.state.id} />
+          <h2>
+            Number of items is{" "}
+            <span title="item-count">{this.state.items.length}</span>
+          </h2>
+          <Component1
+            name={this.state.name}
+            key={this.state.id}
+            size={this.state.items.length}
+          />
         </header>
       </div>
     );

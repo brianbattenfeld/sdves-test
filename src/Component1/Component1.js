@@ -3,8 +3,8 @@ import "./Component1.css";
 
 const component1 = (props) => {
   return (
-    <div className="Component1">
-      <p>This is a sample component</p>
+    <div className="Component1" size={props.size}>
+      <h1>There are {props.size} items for the sample component.</h1>
     </div>
   );
 };
