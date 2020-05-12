@@ -29,7 +29,7 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Learn Reac
           </a>
           <Component1 name={this.state.name} key={this.state.id} />
         </header>
