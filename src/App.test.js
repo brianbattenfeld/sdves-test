@@ -13,5 +13,5 @@ test("renders learn react link", () => {
 
 test("make sure there are no more than 7 items", () => {
   const wrapper = shallow(<App />);
-  expect(wrapper.state().items.length).toBeLessThan(8);
+  expect(wrapper.state().items.length).toBeLessThan(2);
 });
