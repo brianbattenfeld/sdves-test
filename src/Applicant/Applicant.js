@@ -9,31 +9,33 @@ class ButtonComponent extends React.Component {
     this.state = {
       data: "",
       isLoading: false,
+      approved: this.props.approved,
     };
-    this.click = this.click.bind(this);
+    this.approveApplicationHandler = this.approveApplicationHandler.bind(this);
   }
 
-  click() {
+  approveApplicationHandler = () => {
     this.setState({ isLoading: true });
 
     axios
-      .post("<MY_URL>:3900/find/rapinfo", {})
+      .post(`http://localhost:5000/api/applicant/${this.props.id}/approve`, {})
       .then((response) => {
         this.setState({ data: response.data, isLoading: false });
       })
       .catch((err) => {
         this.setState({ data: err, isLoading: false });
       });
-  }
+  };
 
   render() {
     return (
       <div>
-        <button onClick={this.click} disabled={this.state.isLoading}>
-          {" "}
-          click me{" "}
+        <button
+          onClick={this.approveApplicationHandler}
+          disabled={this.state.isLoading}
+        >
+          Approve
         </button>
-        {this.state.data}
       </div>
     );
   }
@@ -72,14 +74,13 @@ const applicant = (props) => {
         <strong>Approval Status:</strong>
         {props.approved ? " Approved" : " Unapproved"}
         <br />
+        <strong>ID:</strong>
+        {props.id}
+        <br />
         <strong>Application Date:</strong> {props.created}
       </p>
 
-      {!props.approved ? (
-        <a href={`http://localhost:5000/api/applicant/${props.id}/approve`}>
-          Approve
-        </a>
-      ) : null}
+      <ButtonComponent id={props.id} />
     </StyledApplicant>
   );
 };
