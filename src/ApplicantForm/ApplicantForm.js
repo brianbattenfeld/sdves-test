@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import axios from "axios";
 import "./ApplicantForm.css";
 
@@ -17,29 +17,39 @@ class ApplicantForm extends React.Component {
       },
     };
 
-    this.handleChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const user = {
-      name: this.state.name,
-    };
-    axios.post("http://localhost:5000/api/applicant", { user }).then((res) => {
-      console.log(res);
-      console.log(res.data);
-      window.location = "/retrieve"; //This line of code will redirect you once the submission is succeed
-    });
+    // const formData = JSON.stringify(this.state.formData);
+    const formData = this.state.formData;
+    console.log(formData);
+    axios
+      .post("http://localhost:5000/api/applicant", formData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .then((res) => {
+        console.log("wrap up");
+      });
   };
-  handleInputChange = (event) => {
+
+  handleInputChange(event) {
     const target = event.target;
+    const value = target.value;
     const name = target.name;
 
-    // this.setState({
-    //   [name]: value,
-    // });
-  };
+    let formData = { ...this.state.formData };
+    formData[name] = value;
+
+    this.setState({
+      formData: formData,
+    });
+  }
 
   render() {
     return (
@@ -53,7 +63,7 @@ class ApplicantForm extends React.Component {
                 type="text"
                 name="firstName"
                 value={this.state.formData.firstName}
-                onChange={this.handleInputchange}
+                onChange={this.handleInputChange}
                 placeholder="First Name"
               />
             </label>
@@ -66,7 +76,7 @@ class ApplicantForm extends React.Component {
                 type="text"
                 name="lastName"
                 value={this.state.formData.lastName}
-                onChange={this.handleInputchange}
+                onChange={this.handleInputChange}
                 placeholder="Last Name"
               />
             </label>
@@ -79,7 +89,7 @@ class ApplicantForm extends React.Component {
                 type="text"
                 name="businessName"
                 value={this.state.formData.businessName}
-                onChange={this.handleInputchange}
+                onChange={this.handleInputChange}
                 placeholder="Business Name"
               />
             </label>
@@ -92,8 +102,10 @@ class ApplicantForm extends React.Component {
                 type="number"
                 name="ein"
                 value={this.state.formData.ein}
-                onChange={this.handleInputchange}
+                onChange={this.handleInputChange}
                 placeholder="EIN (must be 6 characters)"
+                min="100000000"
+                max="999999999"
               />
             </label>
           </div>
@@ -105,6 +117,7 @@ class ApplicantForm extends React.Component {
                 type="text"
                 name="commandId"
                 value={this.state.formData.commandId}
+                readOnly
               />
             </label>
           </div>

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
 import AllApplicants from "./AllApplicants/AllApplicants";
@@ -22,14 +21,14 @@ class App extends Component {
     axios
       .get("http://localhost:5000/api/applicant/all")
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         this.setState({ applicants: res.data });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       })
       .then((res) => {
-        console.log("wrap up");
+        // console.log("wrap up");
       });
   }
 
