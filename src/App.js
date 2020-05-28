@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
 import AllApplicants from "./AllApplicants/AllApplicants";
+import ApplicantForm from "./ApplicantForm/ApplicantForm";
 
 class App extends Component {
   state = {
@@ -35,9 +36,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <AllApplicants applicants={this.state.applicants} />
-        </header>
+        <header className="App-header"></header>
+        <AllApplicants applicants={this.state.applicants} />
+        <ApplicantForm />
       </div>
     );
   }

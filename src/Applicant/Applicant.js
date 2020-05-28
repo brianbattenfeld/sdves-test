@@ -1,45 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
+import moment from "moment";
 import styled from "styled-components";
 import "./Applicant.css";
-
-class ButtonComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: "",
-      isLoading: false,
-      approved: this.props.approved,
-    };
-    this.approveApplicationHandler = this.approveApplicationHandler.bind(this);
-  }
-
-  approveApplicationHandler = () => {
-    this.setState({ isLoading: true });
-
-    axios
-      .post(`http://localhost:5000/api/applicant/${this.props.id}/approve`, {})
-      .then((response) => {
-        this.setState({ data: response.data, isLoading: false });
-      })
-      .catch((err) => {
-        this.setState({ data: err, isLoading: false });
-      });
-  };
-
-  render() {
-    return (
-      <div>
-        <button
-          onClick={this.approveApplicationHandler}
-          disabled={this.state.isLoading}
-        >
-          Approve
-        </button>
-      </div>
-    );
-  }
-}
 
 const StyledApplicant = styled.div`
   margin: 1rem;
@@ -59,30 +22,67 @@ const StyledApplicant = styled.div`
   }
 `;
 
-const applicant = (props) => {
-  let classes = ["Applicant "];
-  classes.push(props.approved ? "green" : "red");
-  let date = new Date(props.created);
+class Applicant extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      approved: this.props.approved,
+    };
+    this.approveApplicationHandler = this.approveApplicationHandler.bind(this);
+  }
 
-  return (
-    <StyledApplicant className={classes.join(" ")}>
-      <p>
-        <strong>Name:</strong> {props.firstName} {props.lastName}
-        <br />
-        <strong>Business Name:</strong> {props.businessName}
-        <br />
-        <strong>Approval Status:</strong>
-        {props.approved ? " Approved" : " Unapproved"}
-        <br />
-        <strong>ID:</strong>
-        {props.id}
-        <br />
-        <strong>Application Date:</strong> {props.created}
-      </p>
+  approveApplicationHandler = () => {
+    this.setState({ isLoading: true });
 
-      <ButtonComponent id={props.id} />
-    </StyledApplicant>
-  );
-};
+    axios
+      .post(`http://localhost:5000/api/applicant/${this.props.id}/approve`, {})
+      .then((response) => {
+        this.setState({
+          data: response.data,
+          isLoading: false,
+          approved: true,
+        });
+      })
+      .catch((err) => {
+        this.setState({ data: err, isLoading: false });
+      });
+  };
 
-export default applicant;
+  render() {
+    let classes = ["Applicant "];
+    classes.push(this.state.approved ? "green" : "red");
+    const date = moment(this.props.created);
+    const cleanDate = date.utcOffset("-0800").format("llll");
+
+    return (
+      <StyledApplicant className={classes.join(" ")}>
+        <p>
+          <strong>Name:</strong> {this.props.firstName} {this.props.lastName}
+          <br />
+          <strong>Business Name:</strong> {this.props.businessName}
+          <br />
+          <strong>Approval Status:</strong>
+          {this.props.approved ? " Approved" : " Unapproved"}
+          <br />
+          <strong>ID:</strong>
+          {this.props.id}
+          <br />
+          <strong>Application Date:</strong> {cleanDate}
+        </p>
+
+        {!this.props.approved ? (
+          <button
+            onClick={this.approveApplicationHandler}
+            disabled={this.state.isLoading}
+            id={this.props.id}
+          >
+            Approve
+          </button>
+        ) : null}
+      </StyledApplicant>
+    );
+  }
+}
+
+export default Applicant;

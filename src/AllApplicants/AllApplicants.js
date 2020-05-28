@@ -26,7 +26,10 @@ const allApplicants = (props) => {
         Total number of applicants:
         <span title="item-count"> {props.applicants.totalCount}</span>
       </h2>
-      {props.applicants.totalCount ? <div>{applicants}</div> : null}
+
+      {props.applicants.totalCount ? (
+        <div className="applicants-wrapper">{applicants}</div>
+      ) : null}
     </div>
   );
 };
